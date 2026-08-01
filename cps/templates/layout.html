@@ -59,6 +59,7 @@
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
+            <li><a id="top_forum" href="https://www.cax.do" target="_blank" rel="noopener"><span class="glyphicon glyphicon-comment"></span> <span class="hidden-sm">CAX论坛</span></a></li>
             {% if current_user.is_authenticated or g.allow_anonymous %}
               {% if g.current_theme == 1 %}
               <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
