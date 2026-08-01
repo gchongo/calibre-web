@@ -2,6 +2,32 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   display: none;
 }
 
+/* Dark theme tag cloud: clear the fixed navbar/subheader and the left page icon,
+   matching the layout the .container1 list normally uses on this page */
+body.blur .tag-cloud {
+  width: calc(80% - 30px);
+  max-width: none;
+  margin: 120px 0 30px 20%;
+  padding: 20px 15px;
+}
+
+@media screen and (max-width: 992px) {
+  body.blur .tag-cloud {
+    width: auto;
+    margin: 120px 15px 30px;
+  }
+}
+
+body.blur .tag-cloud-item.tag-color-0 { color: #e8762d; }
+body.blur .tag-cloud-item.tag-color-1 { color: hsla(0, 0%, 100%, 0.9); }
+body.blur .tag-cloud-item.tag-color-2 { color: #c9601f; }
+body.blur .tag-cloud-item.tag-color-3 { color: hsla(0, 0%, 100%, 0.55); }
+
+body.blur .tag-cloud-item:hover {
+  opacity: 1;
+  text-shadow: 0 0 12px rgba(232, 118, 45, 0.5);
+}
+
 /* Dark theme login: keep form centered in viewport */
 body.login.blur > div.container-fluid > div.row-fluid > div.col-sm-10 {
   display: flex !important;

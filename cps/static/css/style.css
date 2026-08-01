@@ -253,6 +253,35 @@ body.login:not(.blur) .well {
   float: none;
 }
 
+/* Tag cloud (categories page) */
+.tag-cloud {
+  padding: 25px 20px;
+  text-align: center;
+  line-height: 1.25;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tag-cloud-item {
+  display: inline-block;
+  margin: 6px 12px;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: middle;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.tag-cloud-item:hover {
+  transform: scale(1.1);
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.tag-cloud-item.tag-color-0 { color: #d9531e; }
+.tag-cloud-item.tag-color-1 { color: #555; }
+.tag-cloud-item.tag-color-2 { color: #c87f2f; }
+.tag-cloud-item.tag-color-3 { color: #45b29d; }
+
 .more-stuff {
   margin-top: 20px;
   padding-top: 20px;

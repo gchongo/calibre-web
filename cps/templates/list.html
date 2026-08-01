@@ -2,6 +2,25 @@
 {% block body %}
 <h1 class="{{page}}">{{_(title)}}</h1>
 
+{% if data == 'category' %}
+  {# Tag cloud view: font size scales with number of books per tag #}
+  {% set ns = namespace(cmin=none, cmax=1) %}
+  {% for entry in entries %}
+    {% if ns.cmin is none or entry[1] < ns.cmin %}{% set ns.cmin = entry[1] %}{% endif %}
+    {% if entry[1] > ns.cmax %}{% set ns.cmax = entry[1] %}{% endif %}
+  {% endfor %}
+  {% set cmin = ns.cmin if ns.cmin is not none else 1 %}
+  {% set spread = (ns.cmax ** 0.5) - (cmin ** 0.5) %}
+  <div class="tag-cloud">
+    {% for entry in entries %}
+      {% set weight = ((entry[1] ** 0.5) - (cmin ** 0.5)) / (spread if spread > 0 else 1) %}
+      <a class="tag-cloud-item tag-color-{{ loop.index0 % 4 }}"
+         style="font-size: {{ (13 + weight * 27)|round(1) }}px"
+         title="{{ entry[1] }}"
+         href="{{ url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].id) }}">{{ entry[0].name }}</a>
+    {% endfor %}
+  </div>
+{% else %}
     <div class="filterheader hidden-xs">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {% if entries.__len__() and data == 'author' %}
@@ -52,6 +71,7 @@
     {% endfor %}
     </div>
   </div>
+{% endif %}
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>
