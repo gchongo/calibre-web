@@ -2,6 +2,75 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   display: none;
 }
 
+/*
+ * Book grid: fill leftover right-side space (desktop + mobile).
+ * CaliBlur locks each .book to a fixed px width while the row uses CSS grid,
+ * so leftover space that can't fit another fixed card stays empty on the right.
+ * Keep books in normal flow (override Isotope absolute positioning) and let
+ * covers stretch to their grid cell.
+ */
+body.blur .discover .row .book,
+body.blur .discover .isotope .book {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+body.blur .discover > .row,
+body.blur .discover > div.isotope {
+  width: 100% !important;
+  justify-content: stretch !important;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+  grid-gap: 12px 0 !important;
+}
+
+body.blur .discover .book .cover {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 2 / 3;
+  display: block !important;
+}
+
+body.blur .discover .book .cover img,
+body.blur .discover #books .cover img,
+body.blur .discover #books_rand .cover img,
+body.blur .discover .book.isotope-item .cover img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+@media only screen and (max-width: 767px) {
+  body.blur .discover > .row,
+  body.blur .discover > div.isotope {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+  }
+
+  body.blur .discover .row .book,
+  body.blur .discover .isotope .book {
+    padding: 0 4px;
+  }
+
+  /* Mobile: use full content width (theme still subtracts sidebar space on some pages) */
+  body.blur > div.container-fluid > div > div.col-sm-10 > div.discover {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
+
 /* Dark theme tag cloud: clear the fixed navbar/subheader and the left page icon,
    matching the layout the .container1 list normally uses on this page */
 body.blur .tag-cloud {
