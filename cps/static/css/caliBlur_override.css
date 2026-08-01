@@ -2,6 +2,21 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   display: none;
 }
 
+/* Dark theme login: keep form centered in viewport */
+body.login.blur > div.container-fluid > div.row-fluid > div.col-sm-10 {
+  display: flex !important;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 8vh;
+}
+
+body.login.blur .well {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto !important;
+  float: none !important;
+}
+
 .cover .badge {
   position: absolute;
   top: 0;
