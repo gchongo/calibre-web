@@ -591,7 +591,7 @@ def update_view_configuration():
     _config_int(to_save, "config_books_per_page")
     _config_int(to_save, "config_authors_max")
     _config_string(to_save, "config_default_language")
-    _config_string(to_save, "config_default_locale")
+    locale_changed = _config_string(to_save, "config_default_locale")
 
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
@@ -599,6 +599,15 @@ def update_view_configuration():
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
     if "Show_detail_random" in to_save:
         config.config_default_show |= constants.DETAIL_RANDOM
+
+    # Apply UI language change to the current admin account as well (Default Language
+    # otherwise only affects newly created users, which is a common source of confusion)
+    if locale_changed and current_user.is_authenticated and not current_user.is_anonymous:
+        content = ub.session.query(ub.User).filter(ub.User.id == current_user.id).first()
+        if content and content.name != "Guest":
+            content.locale = config.config_default_locale
+            current_user.locale = config.config_default_locale
+            ub.session_commit()
 
     config.save()
     flash(_("Calibre-Web configuration updated"), category="success")
@@ -1711,11 +1720,12 @@ def _db_configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
     gdrive_error = None
+    was_unconfigured = not config.db_configured
 
-    to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
+    to_save['config_calibre_dir'] = strip_whitespaces(re.sub(r'[\\/]metadata\.db$',
                                            '',
-                                           to_save['config_calibre_dir'],
-                                           flags=re.IGNORECASE)
+                                           to_save.get('config_calibre_dir', ''),
+                                           flags=re.IGNORECASE))
     db_valid = False
     try:
         db_change, db_valid = _db_simulate_change()
@@ -1725,7 +1735,7 @@ def _db_configuration_update_helper():
     except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        _db_configuration_result(_("Oops! Database Error: %(error)s.", error=e.orig), gdrive_error)
+        return _db_configuration_result(_("Oops! Database Error: %(error)s.", error=e.orig), gdrive_error)
     try:
         metadata_db = os.path.join(to_save['config_calibre_dir'], "metadata.db")
         if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
@@ -1774,6 +1784,10 @@ def _db_configuration_update_helper():
             flash(_("DB is not Writeable"), category="warning")
     calibre_db.update_config(config, config.config_calibre_dir, ub.app_DB_path)
     config.save()
+    # First-time setup: leave the DB config page after a successful save
+    if was_unconfigured and config.db_configured:
+        flash(_("Database Settings updated"), category="success")
+        return redirect(url_for('web.index'))
     return _db_configuration_result(None, gdrive_error)
 
 

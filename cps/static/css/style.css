@@ -228,6 +228,35 @@ table .bg-dark-danger a { color: #fff; }
   color: #333 !important;
 }
 
+/* Center login form on page */
+body.login {
+  min-height: 100vh;
+}
+
+body.login .container-fluid > .row-fluid {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.login .container-fluid > .row-fluid > .col-sm-10 {
+  width: 100%;
+  max-width: 420px;
+  float: none;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+body.login .login-wrapper {
+  width: 100%;
+  margin: 40px auto;
+}
+
+body.login .login-form {
+  margin: 0;
+}
+
 .more-stuff {
   margin-top: 20px;
   padding-top: 20px;
