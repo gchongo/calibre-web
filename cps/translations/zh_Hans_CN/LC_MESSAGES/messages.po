@@ -1012,7 +1012,7 @@ msgstr "成功！请返回您的设备"
 
 #: cps/render_template.py:41 cps/web.py:421
 msgid "Books"
-msgstr "书籍"
+msgstr "全部书籍"
 
 #: cps/render_template.py:43
 msgid "Show recent books"
@@ -1037,7 +1037,7 @@ msgstr "显示下载过的书籍"
 
 #: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:436
 msgid "Top Rated Books"
-msgstr "最高评分书籍"
+msgstr "高分书籍"
 
 #: cps/render_template.py:60 cps/templates/user_table.html:161
 msgid "Show Top Rated Books"
@@ -1063,7 +1063,7 @@ msgstr "显示未读"
 
 #: cps/render_template.py:68
 msgid "Discover"
-msgstr "发现"
+msgstr "随机发现"
 
 #: cps/render_template.py:70 cps/templates/index.xml:58
 #: cps/templates/user_table.html:159 cps/templates/user_table.html:162
@@ -1073,7 +1073,7 @@ msgstr "显示随机书籍"
 #: cps/render_template.py:71 cps/templates/book_table.html:93
 #: cps/templates/index.xml:97 cps/web.py:1144
 msgid "Categories"
-msgstr "分类"
+msgstr "图书分类"
 
 #: cps/render_template.py:73 cps/templates/user_table.html:158
 msgid "Show Category Section"
@@ -1083,7 +1083,7 @@ msgstr "显示分类栏目"
 #: cps/templates/book_table.html:94 cps/templates/index.xml:106
 #: cps/templates/search_form.html:70 cps/web.py:1034 cps/web.py:1046
 msgid "Series"
-msgstr "丛书"
+msgstr "丛书系列"
 
 #: cps/render_template.py:76 cps/templates/user_table.html:157
 msgid "Show Series Section"
@@ -1092,7 +1092,7 @@ msgstr "显示丛书栏目"
 #: cps/render_template.py:77 cps/templates/book_table.html:92
 #: cps/templates/index.xml:79
 msgid "Authors"
-msgstr "作者"
+msgstr "图书作者"
 
 #: cps/render_template.py:79 cps/templates/user_table.html:160
 msgid "Show Author Section"
@@ -1101,7 +1101,7 @@ msgstr "显示作者栏目"
 #: cps/render_template.py:81 cps/templates/book_table.html:98
 #: cps/templates/index.xml:88 cps/web.py:1002
 msgid "Publishers"
-msgstr "出版社"
+msgstr "出版机构"
 
 #: cps/render_template.py:83 cps/templates/user_table.html:163
 msgid "Show Publisher Section"
@@ -1111,7 +1111,7 @@ msgstr "显示出版社栏目"
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
 #: cps/web.py:1116
 msgid "Languages"
-msgstr "语言"
+msgstr "图书语言"
 
 #: cps/render_template.py:87 cps/templates/user_table.html:155
 msgid "Show Language Section"
@@ -1119,7 +1119,7 @@ msgstr "显示语言栏目"
 
 #: cps/render_template.py:88 cps/templates/index.xml:124
 msgid "Ratings"
-msgstr "评分"
+msgstr "书籍评分"
 
 #: cps/render_template.py:90 cps/templates/user_table.html:164
 msgid "Show Ratings Section"
@@ -3054,7 +3054,7 @@ msgstr "请不要刷新页面"
 
 #: cps/templates/layout.html:147
 msgid "Browse"
-msgstr "按条件浏览"
+msgstr "条件浏览"
 
 #: cps/templates/layout.html:160 cps/templates/stats.html:3
 msgid "About"
