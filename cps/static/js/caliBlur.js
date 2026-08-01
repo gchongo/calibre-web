@@ -106,7 +106,7 @@ if ($("body.book").length > 0) {
         $(this).html('<span>' + label + '</span><span class="' + class_value + '"></span>').find('span').last().append(value);
     });
 
-    $(".book-meta h2:first").clone()
+    $(".book-meta h1:first, .book-meta h2:first").first().clone()
         .prependTo(".book-meta > .btn-toolbar:first");
 
     // If only one download type exists still put the items into a drop-drown list.

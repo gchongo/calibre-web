@@ -3056,6 +3056,9 @@ msgstr "请不要刷新页面"
 msgid "Browse"
 msgstr "条件浏览"
 
+msgid "CAX Library online catalog. Browse books, authors, series, publishers, and categories."
+msgstr "CAX Library 在线书库，浏览图书、作者、丛书、出版社与分类。"
+
 #: cps/templates/layout.html:160 cps/templates/stats.html:3
 msgid "About"
 msgstr "关于"

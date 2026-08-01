@@ -1182,11 +1182,96 @@ def get_series_cover(series_id, resolution=None):
 
 @web.route("/robots.txt")
 def get_robots():
-    try:
-        return send_from_directory(constants.STATIC_DIR, "robots.txt")
-    except PermissionError:
-        log.error("No permission to access robots.txt file.")
-        abort(403)
+    sitemap_url = url_for('web.get_sitemap', _external=True)
+    if not config.config_anonbrowse:
+        body = "User-agent: *\nDisallow: /\n"
+    else:
+        body = (
+            "User-agent: *\n"
+            "Allow: /\n"
+            "Disallow: /admin\n"
+            "Disallow: /me\n"
+            "Disallow: /login\n"
+            "Disallow: /logout\n"
+            "Disallow: /register\n"
+            "Disallow: /upload\n"
+            "Disallow: /read/\n"
+            "Disallow: /listenmp3/\n"
+            "Disallow: /download/\n"
+            "Disallow: /send/\n"
+            "Disallow: /opds\n"
+            "Disallow: /kobo\n"
+            "Disallow: /ajax/\n"
+            "Sitemap: {sitemap}\n"
+        ).format(sitemap=sitemap_url)
+    response = make_response(body)
+    response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    return response
+
+
+@web.route("/sitemap.xml")
+def get_sitemap():
+    """Public sitemap for search engines. Empty when anonymous browse is disabled."""
+    urls = []
+    if config.config_anonbrowse and config.db_configured:
+        urls.append({
+            'loc': url_for('web.index', _external=True),
+            'changefreq': 'daily',
+            'priority': '1.0',
+        })
+        for endpoint, changefreq, priority in (
+            ('web.author_list', 'weekly', '0.6'),
+            ('web.category_list', 'weekly', '0.6'),
+            ('web.series_list', 'weekly', '0.5'),
+            ('web.publisher_list', 'weekly', '0.5'),
+        ):
+            try:
+                urls.append({
+                    'loc': url_for(endpoint, _external=True),
+                    'changefreq': changefreq,
+                    'priority': priority,
+                })
+            except Exception:
+                pass
+
+        # Cap book URLs so large libraries stay crawlable without huge responses
+        books = (calibre_db.session.query(db.Books.id, db.Books.last_modified)
+                 .filter(calibre_db.common_filters())
+                 .order_by(db.Books.last_modified.desc())
+                 .limit(5000)
+                 .all())
+        for book in books:
+            lastmod = None
+            if book.last_modified:
+                try:
+                    lastmod = book.last_modified.strftime('%Y-%m-%d')
+                except Exception:
+                    lastmod = None
+            urls.append({
+                'loc': url_for('web.show_book', book_id=book.id, _external=True),
+                'lastmod': lastmod,
+                'changefreq': 'monthly',
+                'priority': '0.8',
+            })
+
+    xml_parts = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for item in urls:
+        xml_parts.append('<url>')
+        xml_parts.append('<loc>{}</loc>'.format(item['loc']))
+        if item.get('lastmod'):
+            xml_parts.append('<lastmod>{}</lastmod>'.format(item['lastmod']))
+        if item.get('changefreq'):
+            xml_parts.append('<changefreq>{}</changefreq>'.format(item['changefreq']))
+        if item.get('priority'):
+            xml_parts.append('<priority>{}</priority>'.format(item['priority']))
+        xml_parts.append('</url>')
+    xml_parts.append('</urlset>')
+    response = make_response('\n'.join(xml_parts))
+    response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+    return response
 
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})

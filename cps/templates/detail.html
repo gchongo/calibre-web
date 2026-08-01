@@ -1,11 +1,63 @@
 {% extends is_xhr|yesno("fragment.html", "layout.html") %}
-{% block header %}
-    <meta property="og:type" content="book" />
-    <meta property="og:title" content="{{ entry.title|truncate(35) }}" />
-    {% if entry.comments|length > 0 and entry.comments[0].text|length > 0 %}
-      <meta property="og:description" content="{{ entry.comments[0].text|striptags|truncate(65) }}" />
-      <meta property="og:image" content="{{url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified)}}" />
+{% set authors_text = entry.ordered_authors|map(attribute='name')|map('replace', '|', ',')|join(', ') %}
+{% if entry.comments and entry.comments|length > 0 and entry.comments[0].text %}
+  {% set book_description = entry.comments[0].text|striptags|truncate(160) %}
+{% elif authors_text %}
+  {% set book_description = entry.title ~ ' — ' ~ authors_text ~ ' | ' ~ instance %}
+{% else %}
+  {% set book_description = entry.title ~ ' | ' ~ instance %}
+{% endif %}
+{% set cover_url = url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified, _external=True) %}
+{% set book_url = url_for('web.show_book', book_id=entry.id, _external=True) %}
+{% block meta_description %}{{ book_description }}{% endblock %}
+{% block og_defaults %}
+    <meta property="og:type" content="book">
+    <meta property="og:title" content="{{ entry.title }}">
+    <meta property="og:description" content="{{ book_description }}">
+    <meta property="og:url" content="{{ book_url }}">
+    <meta property="og:image" content="{{ cover_url }}">
+    {% for author in entry.ordered_authors %}
+    <meta property="book:author" content="{{ author.name.replace('|', ',') }}">
+    {% endfor %}
+    {% if entry.pubdate %}
+    <meta property="book:release_date" content="{{ entry.pubdate.strftime('%Y-%m-%d') }}">
     {% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ entry.title }}">
+    <meta name="twitter:description" content="{{ book_description }}">
+    <meta name="twitter:image" content="{{ cover_url }}">
+{% endblock %}
+{% block header %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": {{ entry.title|tojson }},
+  "url": {{ book_url|tojson }},
+  "image": {{ cover_url|tojson }},
+  "description": {{ book_description|tojson }},
+  "inLanguage": {% if entry.languages %}{{ entry.languages[0].lang_code|tojson }}{% else %}null{% endif %},
+  "datePublished": {% if entry.pubdate %}{{ entry.pubdate.strftime('%Y-%m-%d')|tojson }}{% else %}null{% endif %},
+  "author": [
+    {% for author in entry.ordered_authors %}
+    {
+      "@type": "Person",
+      "name": {{ author.name.replace('|', ',')|tojson }}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+  "publisher": {% if entry.publishers %}{
+    "@type": "Organization",
+    "name": {{ entry.publishers[0].name|tojson }}
+  }{% else %}null{% endif %},
+  "aggregateRating": {% if entry.ratings and entry.ratings[0].rating %}{
+    "@type": "AggregateRating",
+    "ratingValue": {{ (entry.ratings[0].rating / 2)|round(1) }},
+    "bestRating": 5,
+    "worstRating": 1
+  }{% else %}null{% endif %}
+}
+</script>
 {% endblock %}
 {% block body %}
 <div class="single">
@@ -13,7 +65,7 @@
         <div class="col-sm-3 col-lg-3 col-xs-5">
             <div class="cover">
                 <!-- Always use full-sized image for the detail page -->
-                <img id="detailcover" title="{{ entry.title }}"
+                <img id="detailcover" title="{{ entry.title }}" alt="{{ entry.title }}"
                      src="{{ url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified) }}"/>
             </div>
         </div>
@@ -131,7 +183,7 @@
                     {% endif %}
                 </div>
             </div>
-            <h2 id="title">{{ entry.title }}</h2>
+            <h1 id="title">{{ entry.title }}</h1>
             <p class="author">
                 {% for author in entry.ordered_authors %}
                     <a href="{{ url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{ author.name.replace('|',',') }}</a>
