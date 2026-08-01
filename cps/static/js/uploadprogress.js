@@ -131,8 +131,10 @@
 
             var contentType = xhr.getResponseHeader("Content-Type");
             // Write the error response to the document.
-            if (xhr.status === 502 || xhr.status === 0) {
-                if (xhr.statusText) {
+            if (xhr.status === 413 || xhr.status === 502 || xhr.status === 0) {
+                if (xhr.status === 413) {
+                    this.$modalBar.text("Error: File exceeds the configured maximum upload size");
+                } else if (xhr.statusText) {
                     this.$modalBar.text(xhr.statusText + ": File size may be too big");
                 } else {
                     this.$modalBar.text("Error: File size may be too big");

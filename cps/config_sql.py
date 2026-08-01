@@ -94,6 +94,8 @@ class _Settings(_Base):
     config_access_logfile = Column(String, default=logger.DEFAULT_ACCESS_LOG)
 
     config_uploading = Column(SmallInteger, default=0)
+    # Max upload size in bytes; 0 means unlimited (Flask) / practical max (Tornado)
+    config_upload_limit = Column(Integer, default=constants.DEFAULT_UPLOAD_LIMIT)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_remote_login = Column(Boolean, default=False)
@@ -292,6 +294,22 @@ class ConfigSQL(object):
     def get_mail_server_configured(self):
         return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
                     or (self.mail_gmail_token != {} and self.mail_server_type == 1))
+
+    def get_upload_limit(self):
+        """Return max upload size in bytes for Flask MAX_CONTENT_LENGTH. None = unlimited."""
+        limit = getattr(self, "config_upload_limit", None)
+        if limit is None:
+            return constants.DEFAULT_UPLOAD_LIMIT
+        if limit <= 0:
+            return None
+        return limit
+
+    def get_tornado_upload_limit(self):
+        """Return max_buffer_size for Tornado (must be a positive int)."""
+        limit = self.get_upload_limit()
+        if limit is None:
+            return constants.TORNADO_UPLOAD_UNLIMITED
+        return limit
 
     def get_scheduled_task_settings(self):
         return {k: v for k, v in self.__dict__.items() if k.startswith('schedule_')}

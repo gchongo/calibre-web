@@ -33,7 +33,7 @@ from functools import wraps
 from urllib.parse import urlparse
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, \
-    send_from_directory, g, jsonify
+    send_from_directory, g, jsonify, current_app
 from markupsafe import Markup
 from .cw_login import current_user
 from flask_babel import gettext as _
@@ -1807,6 +1807,17 @@ def _configuration_update_helper():
             to_save["config_upload_formats"] = ','.join(
                 helper.uniq([x.strip().lower() for x in to_save["config_upload_formats"].split(',')]))
             _config_string(to_save, "config_upload_formats")
+
+        if "config_upload_limit" in to_save:
+            try:
+                upload_limit_mb = int(to_save.get("config_upload_limit", "200"))
+            except (TypeError, ValueError):
+                return _configuration_result(_('Maximum upload size must be a number'))
+            if upload_limit_mb < 0:
+                return _configuration_result(_('Maximum upload size must be 0 or greater'))
+            reboot_required |= _config_int(to_save, "config_upload_limit",
+                                           lambda y: int(y) * 1024 * 1024)
+            current_app.config['MAX_CONTENT_LENGTH'] = config.get_upload_limit()
 
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_binariesdir")

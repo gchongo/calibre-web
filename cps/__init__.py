@@ -188,6 +188,7 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
     web_server.init_app(app, config)
+    app.config['MAX_CONTENT_LENGTH'] = config.get_upload_limit()
     from .cw_babel import babel, get_locale
     if hasattr(babel, "localeselector"):
         babel.init_app(app)

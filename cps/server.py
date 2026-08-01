@@ -70,6 +70,7 @@ class WebServer(object):
 
     def init_app(self, application, config):
         self.app = application
+        self.config = config
         self.listen_address = config.get_config_ipaddress()
         self.listen_port = config.config_port
 
@@ -247,9 +248,11 @@ class WebServer(object):
             import asyncio
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         try:
-            # Max Buffersize set to 200MB
+            # Max request body size from admin setting (default 200MB; 0 ≈ unlimited)
+            max_buffer_size = self.config.get_tornado_upload_limit()
+            log.info('Tornado max upload buffer size: %s bytes', max_buffer_size)
             http_server = HTTPServer(MyWSGIContainer(self.app),
-                                     max_buffer_size=209700000,
+                                     max_buffer_size=max_buffer_size,
                                      ssl_options=self.ssl_args)
 
             unix_socket_file = os.environ.get("CALIBRE_UNIX_SOCKET")

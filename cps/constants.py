@@ -139,6 +139,10 @@ DEFAULT_MAIL_SERVER = "mail.example.org"
 
 DEFAULT_PASSWORD    = "admin123"  # nosec
 DEFAULT_PORT        = 8083
+# Default max upload size (Tornado historically capped at ~200MB)
+DEFAULT_UPLOAD_LIMIT = 200 * 1024 * 1024
+# Practical upper bound for Tornado when admin sets limit to 0 (unlimited)
+TORNADO_UPLOAD_UNLIMITED = 64 * 1024 * 1024 * 1024
 env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT", DEFAULT_PORT)
 try:
     DEFAULT_PORT = int(env_CALIBRE_PORT)

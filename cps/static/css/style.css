@@ -224,6 +224,17 @@ table .bg-dark-danger a { color: #fff; }
   font-family: 'Grand Hotel', cursive;
   font-size: 35px;
   color: #45b29d !important;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: auto;
+}
+
+.navbar-brand .navbar-logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
 }
 
 .more-stuff {

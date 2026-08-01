@@ -2,6 +2,35 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   display: none;
 }
 
+/* Custom navbar logo */
+body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a.navbar-brand {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-indent: 0;
+  font-size: 0;
+  color: transparent !important;
+}
+
+body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a.navbar-brand .navbar-logo {
+  display: block;
+  height: 48px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}
+
+@media only screen and (max-width: 767px) {
+  body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a.navbar-brand {
+    pointer-events: auto;
+  }
+
+  body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a.navbar-brand .navbar-logo {
+    height: 32px;
+    max-width: calc(100vw - 160px);
+  }
+}
+
 .cover .badge {
   position: absolute;
   top: 0;
