@@ -2,8 +2,8 @@
 {% block body %}
 <h1 class="{{page}}">{{_(title)}}</h1>
 
-{% if data == 'category' %}
-  {# Tag cloud view: font size scales with number of books per tag #}
+{% if data in ['category', 'author', 'publisher'] %}
+  {# Tag cloud view: font size scales with number of books per item #}
   {% set ns = namespace(cmin=none, cmax=1) %}
   {% for entry in entries %}
     {% if ns.cmin is none or entry[1] < ns.cmin %}{% set ns.cmin = entry[1] %}{% endif %}
@@ -74,5 +74,7 @@
 {% endif %}
 {% endblock %}
 {% block js %}
+{% if data not in ['category', 'author', 'publisher'] %}
 <script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>
+{% endif %}
 {% endblock %}
