@@ -2,6 +2,73 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   display: none;
 }
 
+/*
+ * Book grid: fill horizontal space so there is no empty strip on the right.
+ * Override Isotope absolute positioning and fixed 150px cover widths.
+ */
+body.blur > div.container-fluid > div > div.col-sm-10 > div.discover > div.row,
+body.blur > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+  justify-content: stretch !important;
+  align-content: start !important;
+  gap: 16px 12px !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+body.blur .discover .book,
+body.blur .discover .book.isotope-item,
+body.blur .discover .book.session {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+}
+
+body.blur .container-fluid .book .cover {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 2 / 3;
+  margin-bottom: 8px;
+}
+
+body.blur .container-fluid .book .cover a {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.blur .container-fluid .book .cover img,
+body.blur #books .cover img,
+body.blur #books_rand .cover img,
+body.blur .book.isotope-item .cover img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover;
+}
+
+body.blur .container-fluid .book .meta {
+  width: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+  body.blur > div.container-fluid > div > div.col-sm-10 > div.discover > div.row,
+  body.blur > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+  }
+}
+
 .cover .badge {
   position: absolute;
   top: 0;
