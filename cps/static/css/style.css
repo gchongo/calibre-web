@@ -221,9 +221,11 @@ table .bg-dark-danger a { color: #fff; }
 .container-fluid .author .author-hidden-divider { display: none; }
 
 .navbar-brand {
-  font-family: 'Grand Hotel', cursive;
-  font-size: 35px;
-  color: #45b29d !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #333 !important;
 }
 
 .more-stuff {
