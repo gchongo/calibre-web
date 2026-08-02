@@ -2,6 +2,92 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   display: none;
 }
 
+/*
+ * Book grid right-side gap (safe approach):
+ * Keep fixed cover size (do NOT stretch books to 100% width — that previously
+ * made one book fill the page). Defeat Isotope absolute positioning and use
+ * flex + space-evenly so leftover width is shared between columns instead of
+ * pooling as an empty strip on the right.
+ */
+body.blur .discover > .row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-evenly !important;
+  align-content: flex-start !important;
+  height: auto !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+body.blur .discover > .row .book {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+  float: none !important;
+  /* Keep a fixed card size — never 100% */
+  width: 160px !important;
+  max-width: 160px !important;
+  min-width: 160px !important;
+  margin: 8px 4px !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+body.blur .discover > .row .book .cover {
+  width: 140px !important;
+  height: 210px !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.blur .discover > .row .book .cover img,
+body.blur .discover > .row #books .cover img,
+body.blur .discover > .row #books_rand .cover img,
+body.blur .discover > .row .book.isotope-item .cover img {
+  width: 140px !important;
+  max-width: 140px !important;
+  height: auto !important;
+}
+
+@media only screen and (max-width: 767px) {
+  body.blur .discover > .row {
+    justify-content: space-evenly !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  body.blur .discover > .row .book {
+    width: 110px !important;
+    max-width: 110px !important;
+    min-width: 110px !important;
+    margin: 6px 2px !important;
+  }
+
+  body.blur .discover > .row .book .cover {
+    width: 100px !important;
+    height: 150px !important;
+  }
+
+  body.blur .discover > .row .book .cover img,
+  body.blur .discover > .row #books .cover img,
+  body.blur .discover > .row #books_rand .cover img,
+  body.blur .discover > .row .book.isotope-item .cover img {
+    width: 100px !important;
+    max-width: 100px !important;
+  }
+
+  body.blur > div.container-fluid > div > div.col-sm-10 > div.discover {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+}
+
 /* Keep book detail title styling after h2 -> h1 for SEO */
 .book-meta > h1,
 #bookDetailsModal .book-meta > h1 {
