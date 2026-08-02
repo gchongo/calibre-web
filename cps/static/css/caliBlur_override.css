@@ -54,30 +54,44 @@ body.blur .discover > .row .book.isotope-item .cover img {
 }
 
 @media only screen and (max-width: 767px) {
+  /* 3-column grid that fills the screen; cover capped so cards never explode */
   body.blur .discover > .row {
-    justify-content: space-evenly !important;
+    justify-content: flex-start !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
 
   body.blur .discover > .row .book {
-    width: 110px !important;
-    max-width: 110px !important;
-    min-width: 110px !important;
-    margin: 6px 2px !important;
+    width: 33.333% !important;
+    max-width: 33.333% !important;
+    min-width: 0 !important;
+    margin: 6px 0 !important;
+    padding: 0 4px !important;
   }
 
   body.blur .discover > .row .book .cover {
-    width: 100px !important;
-    height: 150px !important;
+    width: 100% !important;
+    max-width: 120px !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   body.blur .discover > .row .book .cover img,
   body.blur .discover > .row #books .cover img,
   body.blur .discover > .row #books_rand .cover img,
   body.blur .discover > .row .book.isotope-item .cover img {
-    width: 100px !important;
-    max-width: 100px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+
+  body.blur .discover > .row .book .meta .title,
+  body.blur .discover > .row .book .meta .author {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
   }
 
   body.blur > div.container-fluid > div > div.col-sm-10 > div.discover {
@@ -85,6 +99,70 @@ body.blur .discover > .row .book.isotope-item .cover img {
     max-width: 100% !important;
     padding-left: 6px !important;
     padding-right: 6px !important;
+    margin: 0 !important;
+  }
+
+  /* Page title bar: avoid overflow under icons */
+  body.blur:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1,
+  body.blur:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2 {
+    padding-right: 16px !important;
+  }
+
+  /* CAX forum: normal drawer row (not the 120px profile header slot) */
+  body.blur #main-nav > li.nav-forum {
+    float: none !important;
+    width: 100% !important;
+    height: 45px !important;
+    border-bottom: 1px solid hsla(0, 0%, 78%, 0.15);
+  }
+
+  body.blur #main-nav > li.nav-forum > a#top_forum {
+    display: block;
+    width: 100%;
+    height: 45px;
+    line-height: 21px;
+    padding: 12px 15px;
+    color: #fff;
+  }
+
+  body.blur #main-nav > li.nav-forum > a#top_forum .hidden-sm {
+    display: inline !important;
+  }
+
+  /* Keep Guest label inside the profile header area only */
+  body.blur .profileDrop + span.hidden-sm {
+    z-index: 2;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Sidebar drawer: ensure moved column is visible and scrollable */
+  body.blur .navbar-collapse.collapse .col-sm-2 {
+    visibility: visible !important;
+    display: block !important;
+    width: 100% !important;
+    float: none !important;
+    padding: 0 !important;
+  }
+
+  body.blur .navbar-collapse.collapse .navigation {
+    width: 100%;
+  }
+
+  body.blur .navbar-collapse.collapse .navigation li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Very narrow phones: 2 columns */
+@media only screen and (max-width: 380px) {
+  body.blur .discover > .row .book {
+    width: 50% !important;
+    max-width: 50% !important;
   }
 }
 

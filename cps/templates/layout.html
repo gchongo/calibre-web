@@ -77,9 +77,9 @@
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
-            <li><a id="top_forum" href="https://www.cax.do" target="_blank" rel="noopener"><span class="glyphicon glyphicon-comment"></span> <span class="hidden-sm">CAX论坛</span></a></li>
             {% if current_user.is_authenticated or g.allow_anonymous %}
               {% if g.current_theme == 1 %}
+              {# Profile must stay first: caliBlur mobile CSS styles #main-nav > li:nth-child(1) as the user header #}
               <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu profileDropli">
                     <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}" ><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
@@ -93,6 +93,7 @@
                 </ul>
               </li>
               {% endif %}
+              <li class="nav-forum"><a id="top_forum" href="https://www.cax.do" target="_blank" rel="noopener"><span class="glyphicon glyphicon-comment"></span> <span class="hidden-sm">CAX论坛</span></a></li>
               {% if current_user.role_upload() and g.allow_upload %}
                   <li>
                     <form id="form-upload" class="navbar-form" action="{{ url_for('edit-book.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
@@ -117,6 +118,8 @@
                 <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
                 {% endif %}
               {% endif %}
+            {% else %}
+              <li class="nav-forum"><a id="top_forum" href="https://www.cax.do" target="_blank" rel="noopener"><span class="glyphicon glyphicon-comment"></span> <span class="hidden-sm">CAX论坛</span></a></li>
             {% endif %}
             {% if g.allow_registration and not current_user.is_authenticated and g.current_theme == 0 %}
             <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
