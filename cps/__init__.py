@@ -87,7 +87,9 @@ app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
-    REMEMBER_COOKIE_SAMESITE='Strict',
+    # Lax (not Strict): Strict remember cookies are often dropped on mobile
+    # browsers / in-app WebViews after navigation, causing login loss on refresh.
+    REMEMBER_COOKIE_SAMESITE='Lax',
     WTF_CSRF_SSL_STRICT=False,
     SESSION_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "session",
     REMEMBER_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "remember_token"

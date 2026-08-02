@@ -171,7 +171,8 @@ class _Settings(_Base):
     config_password_upper = Column(Boolean, default=True)
     config_password_character = Column(Boolean, default=True)
     config_password_special = Column(Boolean, default=True)
-    config_session = Column(Integer, default=1)
+    # 0=Basic (recommended behind reverse proxy / for mobile); 1=Strong
+    config_session = Column(Integer, default=0)
     config_ratelimiter = Column(Boolean, default=True)
     config_limiter_uri = Column(String, default="")
     config_limiter_options = Column(String, default="")

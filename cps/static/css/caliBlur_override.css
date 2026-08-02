@@ -54,79 +54,50 @@ body.blur .discover > .row .book.isotope-item .cover img {
 }
 
 @media only screen and (max-width: 767px) {
-  /* 3-column grid that fills the screen; cover capped so cards never explode */
-  body.blur .discover > .row {
-    justify-content: flex-start !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  body.blur .discover > .row .book {
-    width: 33.333% !important;
-    max-width: 33.333% !important;
-    min-width: 0 !important;
-    margin: 6px 0 !important;
-    padding: 0 4px !important;
-  }
-
-  body.blur .discover > .row .book .cover {
+  /* ---- Uniform drawer spacing (forum / section heads / nav links) ---- */
+  body.blur #main-nav > li.nav-forum,
+  body.blur .navbar-collapse .navigation > ul > li,
+  body.blur .navbar-collapse .navigation li {
+    float: none !important;
     width: 100% !important;
-    max-width: 120px !important;
     height: auto !important;
-    aspect-ratio: 2 / 3;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  body.blur .discover > .row .book .cover img,
-  body.blur .discover > .row #books .cover img,
-  body.blur .discover > .row #books_rand .cover img,
-  body.blur .discover > .row .book.isotope-item .cover img {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 100% !important;
-    object-fit: cover;
-  }
-
-  body.blur .discover > .row .book .meta .title,
-  body.blur .discover > .row .book .meta .author {
-    font-size: 11px !important;
-    line-height: 1.3 !important;
-  }
-
-  body.blur > div.container-fluid > div > div.col-sm-10 > div.discover {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
+    min-height: 0 !important;
     margin: 0 !important;
   }
 
-  /* Page title bar: avoid overflow under icons */
-  body.blur:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1,
-  body.blur:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2 {
-    padding-right: 16px !important;
-  }
-
-  /* CAX forum: normal drawer row (not the 120px profile header slot) */
   body.blur #main-nav > li.nav-forum {
-    float: none !important;
-    width: 100% !important;
-    height: 45px !important;
     border-bottom: 1px solid hsla(0, 0%, 78%, 0.15);
   }
 
-  body.blur #main-nav > li.nav-forum > a#top_forum {
+  body.blur #main-nav > li.nav-forum > a#top_forum,
+  body.blur .navbar-collapse .navigation li a {
     display: block;
     width: 100%;
-    height: 45px;
-    line-height: 21px;
-    padding: 12px 15px;
+    height: 44px !important;
+    min-height: 44px !important;
+    line-height: 20px !important;
+    padding: 12px 15px !important;
+    margin: 0 !important;
     color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
   }
 
   body.blur #main-nav > li.nav-forum > a#top_forum .hidden-sm {
     display: inline !important;
+  }
+
+  /* Section headers: same vertical rhythm as links (was 60px → large empty gaps) */
+  body.blur .navbar-collapse .navigation .nav-head,
+  body.blur .navbar-collapse #scnd-nav li.nav-head {
+    height: 36px !important;
+    min-height: 36px !important;
+    line-height: 36px !important;
+    margin: 4px 0 0 !important;
+    padding: 0 15px !important;
+    font-size: 11px !important;
   }
 
   /* Keep Guest label inside the profile header area only */
@@ -151,10 +122,98 @@ body.blur .discover > .row .book.isotope-item .cover img {
     width: 100%;
   }
 
-  body.blur .navbar-collapse.collapse .navigation li a {
-    white-space: nowrap;
-    overflow: hidden;
+  /* ---- Book grid: fill width, denser cover→title spacing, 2-line titles ---- */
+  body.blur .discover > .row {
+    justify-content: flex-start !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  body.blur .discover > .row .book {
+    width: 33.333% !important;
+    max-width: 33.333% !important;
+    min-width: 0 !important;
+    margin: 10px 0 14px !important;
+    padding: 0 6px !important;
+  }
+
+  body.blur .discover > .row .book .cover {
+    width: 100% !important;
+    max-width: 120px !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3;
+    margin: 0 auto 10px !important;
+  }
+
+  body.blur .discover > .row .book .cover img,
+  body.blur .discover > .row #books .cover img,
+  body.blur .discover > .row #books_rand .cover img,
+  body.blur .discover > .row .book.isotope-item .cover img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+
+  body.blur .discover > .row .book .meta {
+    margin-top: 0 !important;
+  }
+
+  body.blur .discover > .row .book .meta .title {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden !important;
     text-overflow: ellipsis;
+    max-height: 2.7em;
+  }
+
+  body.blur .discover > .row .book .meta .author,
+  body.blur .discover > .row .book .meta .series {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    margin-top: 2px !important;
+  }
+
+  body.blur > div.container-fluid > div > div.col-sm-10 > div.discover {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    margin: 0 !important;
+  }
+
+  /* Page title bar: even gap above/below */
+  body.blur:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1,
+  body.blur:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2 {
+    padding-right: 16px !important;
+  }
+
+  /* Detail page: hide cloned toolbar title on mobile (theme hid h2 only; we use h1) */
+  body.blur .book-meta .btn-toolbar > h1,
+  body.blur .book-meta .btn-toolbar > h2 {
+    display: none !important;
+  }
+
+  body.blur .book-meta > h1 {
+    max-width: 100% !important;
+    margin-left: 120px;
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+    padding: 12px 8px 8px 0 !important;
+    white-space: normal;
+  }
+
+  body.blur .book-meta > .bookinfo > p:first-of-type,
+  body.blur.book .author {
+    margin-left: 120px;
+    padding-right: 8px;
   }
 }
 
@@ -181,6 +240,24 @@ body.blur .discover > .row .book.isotope-item .cover img {
 
 #bookDetailsModal .book-meta > h1 {
   margin-top: 15px;
+}
+
+/* Desktop sticky header clone (caliBlur.js clones h1 into toolbar) */
+.book-meta .btn-toolbar > h1 {
+  height: 60px;
+  margin: 0;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: hsla(0, 0%, 100%, 0.7);
+  font-family: "Open Sans Semibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 60px;
+  white-space: nowrap;
+  font-weight: 400;
+  order: -1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: none;
 }
 
 /* Dark theme tag cloud: clear the fixed navbar/subheader and the left page icon,
