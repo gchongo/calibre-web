@@ -49,6 +49,10 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 - Sync Kobo devices with your Calibre library
 - In-browser eBook reading support for multiple formats
 - Upload new books in various formats, including audio formats
+- Configurable maximum upload size in the admin settings
+- Tag cloud view for categories, authors, and publishers
+- SEO-friendly pages with Open Graph / Twitter cards, JSON-LD book metadata, `robots.txt`, and `sitemap.xml`
+- Improved dark theme (caliBlur) layout on mobile devices
 - Calibre Custom Columns support
 - Content hiding based on categories and Custom Column content per user
 - Self-update capability
