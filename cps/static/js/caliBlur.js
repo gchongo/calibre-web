@@ -320,14 +320,13 @@ $(document).on("click", ".dropdown-toggle", function () {
     });
 });
 
-// Collapse long text into read-more
-$("div.comments").readmore({
-    collapsedHeight: 134,
-    heightMargin: 45,
-    speed: 300,
-    moreLink: '<a href="#">READ MORE</a>',    // ToDo: make translateable
-    lessLink: '<a href="#">READ LESS</a>',    // ToDo: make translateable
-});
+// Show full book description (no READ MORE / READ LESS collapse)
+// Previously: $("div.comments").readmore({ collapsedHeight: 134, ... });
+if ($("div.comments").length && typeof $.fn.readmore === "function") {
+    try { $("div.comments").readmore("destroy"); } catch (e) { /* not initialized */ }
+}
+$("div.comments").css({ height: "auto", "max-height": "none", overflow: "visible" });
+$("[data-readmore-toggle]").remove();
 /////////////////////////////////
 //     End of Global Work     //
 ///////////////////////////////
