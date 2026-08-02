@@ -384,7 +384,27 @@ body.blur .discover > .row .book.isotope-item .cover img {
     border-top: 1px solid hsla(0, 0%, 100%, 0.14);
     padding-top: 12px !important;
     margin-top: 12px !important;
-    padding-left: 28px !important;
+    padding-left: 0 !important;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  body.blur.book .book-meta > .bookinfo > .tags .glyphicon-tags,
+  body.blur.book .book-meta > .bookinfo > .identifiers .glyphicon-link {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    flex: 0 0 auto;
+    width: auto !important;
+    position: relative;
+    top: 6px;
+    color: hsla(0, 0%, 100%, 0.45);
+  }
+
+  body.blur.book .book-meta > .bookinfo > .tags a,
+  body.blur.book .book-meta > .bookinfo > .identifiers a {
+    margin: 0 !important;
   }
 
   body.blur.book .book-meta > .bookinfo > .publishers {
@@ -522,6 +542,22 @@ body.blur.book .book-meta > .bookinfo > .identifiers {
   border-top: 1px solid hsla(0, 0%, 100%, 0.14);
   padding-top: 14px;
   margin-top: 14px;
+  padding-left: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+body.blur.book .book-meta > .bookinfo > .tags .glyphicon-tags,
+body.blur.book .book-meta > .bookinfo > .identifiers .glyphicon-link {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  flex: 0 0 auto;
+  width: auto !important;
+  position: relative;
+  top: 6px;
+  color: hsla(0, 0%, 100%, 0.45);
 }
 
 body.blur.book .book-meta > .bookinfo > .publishers {
@@ -787,8 +823,7 @@ body.blur [data-readmore-toggle] {
   max-width: none;
 }
 
-/* Dark theme tag cloud: clear the fixed navbar/subheader and the left page icon,
-   matching the layout the .container1 list normally uses on this page */
+/* Dark theme tag cloud: clear fixed navbar/subheader */
 body.blur .tag-cloud {
   width: calc(80% - 30px);
   max-width: none;
@@ -799,7 +834,97 @@ body.blur .tag-cloud {
 @media screen and (max-width: 992px) {
   body.blur .tag-cloud {
     width: auto;
-    margin: 120px 15px 30px;
+    /* Was 120px — left a huge empty band under the mobile title bar */
+    margin: 56px 12px 24px !important;
+    padding: 8px 4px 20px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  /* List-page header icons (分类/作者/丛书/出版社): inset from right edge */
+  body.blur.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before,
+  body.blur.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before,
+  body.blur.serieslist > div.container-fluid > div.row-fluid > div.col-sm-10:before,
+  body.blur.publisherlist > div.container-fluid > div.row-fluid > div.col-sm-10:before,
+  body.blur.langlist > div.container-fluid > div > div.col-sm-10:before,
+  body.blur.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before,
+  body.blur.ratingslist > div.container-fluid > div > div.col-sm-10:before {
+    right: 36px !important;
+    top: 58px !important;
+  }
+
+  /* Author/category/publisher lists: content starts just under title bar */
+  body.blur.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1,
+  body.blur.catlist > div.container-fluid > div > div.col-sm-10 > div.container1,
+  body.blur.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1,
+  body.blur.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1,
+  body.blur.langlist > div.container-fluid > div > div.col-sm-10 > div.container1 {
+    margin: 48px 0 16px !important;
+    padding: 0 8px !important;
+  }
+
+  body.blur .tag-cloud {
+    margin: 48px 12px 20px !important;
+    padding: 4px 2px 16px !important;
+  }
+
+  /*
+   * Series grid (#list, not .discover): same 3-column fill as book lists,
+   * so leftover width does not pool as an empty strip on the right.
+   */
+  body.blur.serieslist #list.row,
+  body.blur #list.row.display-flex {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-content: flex-start !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 48px 4px 16px !important;
+    box-sizing: border-box;
+  }
+
+  body.blur.serieslist #list.row > .book,
+  body.blur #list.row.display-flex > .book {
+    position: relative !important;
+    float: none !important;
+    left: auto !important;
+    top: auto !important;
+    width: 33.333% !important;
+    max-width: 33.333% !important;
+    min-width: 0 !important;
+    margin: 0 0 14px !important;
+    padding: 0 6px !important;
+    box-sizing: border-box;
+  }
+
+  body.blur.serieslist #list.row > .book .cover,
+  body.blur #list.row.display-flex > .book .cover {
+    width: 100% !important;
+    max-width: 120px !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3;
+    margin: 0 auto 8px !important;
+    position: relative;
+  }
+
+  body.blur.serieslist #list.row > .book .cover img,
+  body.blur #list.row.display-flex > .book .cover img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+
+  body.blur.serieslist #list.row > .book .meta .title,
+  body.blur #list.row.display-flex > .book .meta .title {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden !important;
   }
 }
 
@@ -830,14 +955,15 @@ body.login.blur .well {
 
 .cover .badge {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 6px;
+  left: 6px;
   color: #fff;
   background-color: #cc7b19;
-  border-radius: 0;
+  border-radius: 3px;
   padding: 0 8px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
-  line-height: 24px;
+  line-height: 22px;
+  z-index: 2;
 }
 
 .cover {
