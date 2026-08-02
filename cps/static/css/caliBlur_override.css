@@ -202,43 +202,96 @@ body.blur .discover > .row .book.isotope-item .cover img {
   }
 
   /*
-   * Cover is position:absolute (100×150). Keep title/author beside it without
-   * forcing huge min-heights (those caused empty gaps on long titles).
-   * Theme .hr spacer is collapsed; shelf chips stay on one row.
+   * Book detail (mobile): CSS grid so cover is in-flow beside title/author.
+   * Avoids absolute-cover overlap with shelves/tags, without huge min-heights.
    */
+  body.blur.book .single > .row {
+    display: grid !important;
+    grid-template-columns: 100px minmax(0, 1fr);
+    grid-template-areas:
+      "toolbar toolbar"
+      "cover title"
+      "cover author"
+      "meta meta";
+    column-gap: 12px;
+    row-gap: 0;
+    align-items: start;
+  }
+
+  body.blur.book .single > .row > .col-sm-3.col-lg-3.col-xs-5 {
+    grid-area: cover;
+    position: relative !important;
+    width: 100px !important;
+    max-width: 100px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  body.blur.book .single > .row > .col-sm-3.col-lg-3.col-xs-5 > .cover {
+    width: 100px !important;
+    margin: 0 !important;
+  }
+
+  body.blur.book .single > .row > .col-sm-3.col-lg-3.col-xs-5 > .cover > img {
+    width: 100px !important;
+    height: 150px !important;
+    object-fit: cover;
+  }
+
+  /* Let toolbar / title / author / bookinfo become row grid items */
+  body.blur.book .single > .row > .book-meta {
+    display: contents;
+  }
+
+  body.blur.book .book-meta > .btn-toolbar {
+    grid-area: toolbar;
+    position: relative !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 0 10px !important;
+    margin-left: 0 !important;
+  }
+
   body.blur.book .book-meta > h1 {
+    grid-area: title;
+    margin-left: 0 !important;
     max-width: 100% !important;
-    margin-left: 120px;
-    font-size: 16px !important;
-    line-height: 1.25 !important;
-    padding: 8px 8px 4px 0 !important;
     min-height: 0 !important;
+    padding: 0 0 6px !important;
+    font-size: 16px !important;
+    line-height: 1.3 !important;
     white-space: normal;
+    align-self: end;
   }
 
   body.blur.book .book-meta > .author {
-    margin-left: 120px !important;
-    padding-right: 8px;
-    padding-bottom: 8px !important;
+    grid-area: author;
+    margin-left: 0 !important;
     min-height: 0 !important;
-    box-sizing: border-box;
+    padding: 0 !important;
+    align-self: start;
+  }
+
+  body.blur.book .book-meta > .rating,
+  body.blur.book .book-meta > .rating-mobile {
+    grid-area: author;
+    margin-left: 0 !important;
   }
 
   body.blur.book .book-meta > .bookinfo {
-    clear: both !important;
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-top: 4px !important;
-    padding-top: 0;
+    grid-area: meta;
+    clear: none !important;
+    width: auto !important;
+    max-width: 100%;
+    margin: 4px 0 0 !important;
+    padding: 0;
   }
 
-  /* Theme inserts .hr with margin:45px on mobile — collapse that gap */
-  body.blur.book .book-meta > .bookinfo > .hr {
-    margin: 10px 0 8px !important;
-    height: 0 !important;
-    padding: 0 !important;
-    background: none !important;
-    border: none !important;
+  body.blur.book .book-meta > .more-stuff {
+    grid-area: meta;
   }
 
   body.blur.book .book-meta > .bookinfo > .tags,
@@ -247,18 +300,73 @@ body.blur .discover > .row .book.isotope-item .cover img {
     margin-left: 0 !important;
   }
 
-  body.blur.book .book-meta > .bookinfo > .tags {
-    position: relative;
-    z-index: 2;
+  /* ---- Section dividers ---- */
+  body.blur.book .book-meta > .bookinfo > .hr {
+    display: block !important;
+    height: 0 !important;
+    margin: 12px 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+    border-top: 1px solid hsla(0, 0%, 100%, 0.14) !important;
   }
 
-  /* Shelf remove chips: icon + label on one line (not stacked) */
+  body.blur.book .book-meta > .bookinfo > .tags,
+  body.blur.book .book-meta > .bookinfo > .identifiers {
+    border-top: 1px solid hsla(0, 0%, 100%, 0.14);
+    padding-top: 12px !important;
+    margin-top: 12px !important;
+    padding-left: 28px !important;
+  }
+
+  body.blur.book .book-meta > .bookinfo > .publishers {
+    border-top: 1px solid hsla(0, 0%, 100%, 0.14);
+    padding-top: 12px !important;
+    margin-top: 12px !important;
+  }
+
+  body.blur.book .book-meta > .bookinfo > .comments,
+  body.blur.book .book-meta > .bookinfo > .description {
+    border-top: 1px solid hsla(0, 0%, 100%, 0.14);
+    padding-top: 14px !important;
+    margin-top: 14px !important;
+  }
+
+  /* Metadata rows: label + value closer, no huge gap / stray icons */
+  body.blur.book .book-meta > .bookinfo > .publishers,
+  body.blur.book .book-meta > .bookinfo > .publishing-date,
+  body.blur.book .book-meta > .bookinfo > .languages,
+  body.blur.book .book-meta > .bookinfo > .real_custom_columns {
+    display: flex !important;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
+  body.blur.book .book-meta > .bookinfo > .publishers > span:first-of-type,
+  body.blur.book .book-meta > .bookinfo > .publishing-date > span:first-of-type,
+  body.blur.book .book-meta > .bookinfo > .languages > span:first-of-type,
+  body.blur.book .book-meta > .bookinfo > .real_custom_columns > span:first-of-type {
+    width: auto !important;
+    max-width: none !important;
+    min-width: 4.5em;
+    flex: 0 0 auto;
+  }
+
+  body.blur.book .book-meta > .bookinfo > .publishers > span:last-of-type,
+  body.blur.book .book-meta > .bookinfo > .publishing-date > span:last-of-type,
+  body.blur.book .book-meta > .bookinfo > .languages > span:last-of-type {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Shelf chips: icon + label same row */
   body.blur.book #remove-from-shelves {
     display: flex !important;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin: 4px 0 8px !important;
+    margin: 0 0 4px !important;
     padding-left: 0 !important;
   }
 
@@ -301,7 +409,7 @@ body.blur .discover > .row .book.isotope-item .cover img {
   body.blur.book #remove-from-shelves + .publishers,
   body.blur.book #remove-from-shelves + .publishing-date,
   body.blur.book #remove-from-shelves + .tags {
-    margin-top: 4px !important;
+    margin-top: 12px !important;
   }
 }
 
@@ -328,6 +436,37 @@ body.blur .discover > .row .book.isotope-item .cover img {
 
 #bookDetailsModal .book-meta > h1 {
   margin-top: 15px;
+}
+
+/* Detail page: clear section dividers (all breakpoints) */
+body.blur.book .book-meta > .bookinfo > .hr {
+  display: block;
+  height: 0;
+  margin: 16px 0;
+  padding: 0;
+  background: none !important;
+  border: none;
+  border-top: 1px solid hsla(0, 0%, 100%, 0.14);
+}
+
+body.blur.book .book-meta > .bookinfo > .tags,
+body.blur.book .book-meta > .bookinfo > .identifiers {
+  border-top: 1px solid hsla(0, 0%, 100%, 0.14);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+body.blur.book .book-meta > .bookinfo > .publishers {
+  border-top: 1px solid hsla(0, 0%, 100%, 0.14);
+  padding-top: 14px;
+  margin-top: 14px !important;
+}
+
+body.blur.book .book-meta > .bookinfo > .comments,
+body.blur.book .book-meta > .bookinfo > .description {
+  border-top: 1px solid hsla(0, 0%, 100%, 0.14);
+  padding-top: 16px;
+  margin-top: 16px !important;
 }
 
 /* Always show full description; hide leftover readmore UI */
