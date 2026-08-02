@@ -203,8 +203,14 @@ body.blur .discover > .row .book.isotope-item .cover img {
 
   /*
    * Book detail (mobile): CSS grid so cover is in-flow beside title/author.
-   * Avoids absolute-cover overlap with shelves/tags, without huge min-heights.
+   * Series (if any) sits under author beside the cover — not under the cover.
    */
+  body.blur.book .single > .row:before,
+  body.blur.book .single > .row:after {
+    content: none !important;
+    display: none !important;
+  }
+
   body.blur.book .single > .row {
     display: grid !important;
     grid-template-columns: 100px minmax(0, 1fr);
@@ -218,15 +224,27 @@ body.blur .discover > .row .book.isotope-item .cover img {
     align-items: start;
   }
 
+  /* Extra row only when series exists (no empty gap on non-series books) */
+  body.blur.book .single > .row:has(.series-info) {
+    grid-template-areas:
+      "toolbar toolbar"
+      "cover title"
+      "cover author"
+      "cover series"
+      "meta meta";
+  }
+
   body.blur.book .single > .row > .col-sm-3.col-lg-3.col-xs-5 {
     grid-area: cover;
     position: relative !important;
     width: 100px !important;
     max-width: 100px !important;
-    height: auto !important;
+    height: 150px !important;
+    min-height: 150px !important;
     margin: 0 !important;
     padding: 0 !important;
     pointer-events: auto !important;
+    align-self: start;
   }
 
   body.blur.book .single > .row > .col-sm-3.col-lg-3.col-xs-5 > .cover {
@@ -240,7 +258,7 @@ body.blur .discover > .row .book.isotope-item .cover img {
     object-fit: cover;
   }
 
-  /* Let toolbar / title / author / bookinfo become row grid items */
+  /* Let toolbar / title / author / series / bookinfo become row grid items */
   body.blur.book .single > .row > .book-meta {
     display: contents;
   }
@@ -275,6 +293,24 @@ body.blur .discover > .row .book.isotope-item .cover img {
     align-self: start;
   }
 
+  /* Hide theme "Author —" prefix on mobile */
+  body.blur.book .book-meta > .author:before,
+  body.blur.book .book-meta > .author > a:first-of-type:before {
+    content: none !important;
+    display: none !important;
+  }
+
+  body.blur.book .book-meta > .series-info {
+    grid-area: series;
+    margin: 4px 0 0 !important;
+    padding: 0 !important;
+    max-width: 100%;
+    font-size: 13px;
+    line-height: 1.35;
+    color: hsla(0, 0%, 100%, 0.65);
+    align-self: start;
+  }
+
   body.blur.book .book-meta > .rating,
   body.blur.book .book-meta > .rating-mobile {
     grid-area: author;
@@ -286,7 +322,7 @@ body.blur .discover > .row .book.isotope-item .cover img {
     clear: none !important;
     width: auto !important;
     max-width: 100%;
-    margin: 4px 0 0 !important;
+    margin: 10px 0 0 !important;
     padding: 0;
   }
 
@@ -298,6 +334,24 @@ body.blur .discover > .row .book.isotope-item .cover img {
   body.blur.book .book-meta > .bookinfo > .identifiers,
   body.blur.book .book-meta > .bookinfo > p:first-of-type {
     margin-left: 0 !important;
+  }
+
+  /* Language value: plain text like publisher/date (no Bootstrap label pill) */
+  body.blur.book .book-meta > .bookinfo > .languages > span:last-of-type,
+  body.blur.book .book-meta > .bookinfo > .languages .label,
+  body.blur.book .book-meta > .bookinfo > .languages .label-default {
+    background: none !important;
+    background-color: transparent !important;
+    color: #fff !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    text-align: left !important;
+    display: inline !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    line-height: inherit !important;
+    white-space: normal !important;
   }
 
   /* ---- Section dividers ---- */
@@ -467,6 +521,32 @@ body.blur.book .book-meta > .bookinfo > .description {
   border-top: 1px solid hsla(0, 0%, 100%, 0.14);
   padding-top: 16px;
   margin-top: 16px !important;
+}
+
+/* Language: plain left-aligned text (JS used to keep Bootstrap .label pill) */
+body.blur.book .book-meta > .bookinfo > .languages > span:last-of-type,
+body.blur.book .book-meta > .bookinfo > .languages .label,
+body.blur.book .book-meta > .bookinfo > .languages .label-default {
+  background: none !important;
+  background-color: transparent !important;
+  color: #fff !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  text-align: left !important;
+  display: inline !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: inherit !important;
+  white-space: normal !important;
+}
+
+/* Series under author on desktop too (moved out of .bookinfo by caliBlur.js) */
+body.blur.book .book-meta > .series-info {
+  margin: 4px 0 12px;
+  max-width: calc(100% - 100px);
+  font-size: 14px;
+  color: hsla(0, 0%, 100%, 0.65);
 }
 
 /* Always show full description; hide leftover readmore UI */

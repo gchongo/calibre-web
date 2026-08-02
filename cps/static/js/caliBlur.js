@@ -60,6 +60,10 @@ if ($("body.book").length > 0) {
     $(bookInfo).wrapAll('<div class="bookinfo"></div>');
 //  $( 'h3:contains("Description:")' ).after( '<div class="description"></div>' );
     $(".languages").appendTo(".bookinfo");
+    // Keep series line under author (beside cover), not in full-width meta below cover
+    $(".bookinfo > p").filter(function () {
+        return $(this).find('a[href*="/series/"]').length > 0;
+    }).addClass("series-info").insertAfter(".book-meta > .author");
     $(".hr").detach();
     if ($(".identifiers ").length > 0) {
         console.log(".identifiers length " + $(".identifiers").length);
@@ -69,13 +73,8 @@ if ($("body.book").length > 0) {
             console.log(".bookinfo > p:first-child length " + $(".bookinfo > p").length);
             $(".bookinfo > p:first-child").first().after('<div class="hr"></div>');
         } else {
-            if ($('.bookinfo a[href*="/series/"]').length > 0) {
-                console.log("series text found; placing hr below series");
-                $('.bookinfo a[href*="/series/"]').parent().after('<div class="hr"></div>');
-            } else {
-                console.log("prepending hr div to top of .bookinfo");
-                $(".bookinfo").prepend('<div class="hr"></div>');
-            }
+            console.log("prepending hr div to top of .bookinfo");
+            $(".bookinfo").prepend('<div class="hr"></div>');
         }
     }
     $(".rating").insertBefore(".hr");
@@ -99,9 +98,9 @@ if ($("body.book").length > 0) {
         if ($(this).find('a').length) {
             value = $(this).find('a').first().removeClass();
         }
-        // Preserve glyphicons
-        if ($(this).find('span').length) {
-            class_value = $(this).find('span').first().attr('class');
+        // Preserve glyphicons only (not Bootstrap .label pills — those clash with theme)
+        if ($(this).find('span.glyphicon').length) {
+            class_value = $(this).find('span.glyphicon').first().attr('class');
         }
         $(this).html('<span>' + label + '</span><span class="' + class_value + '"></span>').find('span').last().append(value);
     });
