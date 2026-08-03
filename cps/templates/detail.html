@@ -390,7 +390,18 @@
                             <div id="shelf-action-errors" class="pull-left" role="alert"></div>
                         </div>
                     {% endif %}
-
+                {% elif books_shelfs and g.shelves_access %}
+                    <div id="remove-from-shelves" class="btn-group public-shelf-memberships" role="group"
+                         aria-label="{{ _('Public shelves') }}">
+                        {% for shelf in g.shelves_access %}
+                            {% if shelf.is_public == 1 and shelf.id in books_shelfs %}
+                                <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}"
+                                   class="btn btn-sm btn-default" role="button">
+                                    <span></span>{{ shelf.name }} {{ _('(Public)') }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 {% endif %}
                 {% if current_user.role_edit() %}
                     <div class="col-sm-12">
