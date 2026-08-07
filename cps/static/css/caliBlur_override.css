@@ -954,6 +954,11 @@ body.blur .tag-cloud-item.tag-color-1 { color: hsla(0, 0%, 100%, 0.9); }
 body.blur .tag-cloud-item.tag-color-2 { color: #c9601f; }
 body.blur .tag-cloud-item.tag-color-3 { color: hsla(0, 0%, 100%, 0.55); }
 
+body.blur .tag-cloud-item {
+  display: inline-block;
+  transition: opacity 0.2s ease, text-shadow 0.2s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+
 body.blur .tag-cloud-item:hover {
   opacity: 1;
   text-shadow: 0 0 12px rgba(232, 118, 45, 0.5);
@@ -989,6 +994,7 @@ body.login.blur .well {
 
 .cover {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease;
 }
 
 .cover .read {
@@ -1009,4 +1015,214 @@ input.datepicker:focus + input {color: #555}
         .row-fluid > .col-sm-2 {
         visibility: hidden;
     }
+}
+
+/*
+ * Micro-interactions (monday-inspired, dark-theme calibrated)
+ * - Lift covers (not .book — Isotope needs transform:none on .book)
+ * - Soft sidebar / chip / button feedback
+ * - Pointer-fine only; respect reduced-motion
+ */
+@media (hover: hover) and (pointer: fine) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* ---- Book covers: lift + deeper shadow ---- */
+    body.blur .discover .book .cover,
+    body.blur #list .book .cover,
+    body.blur .book.isotope-item .cover {
+      transform-origin: center bottom;
+    }
+
+    body.blur .discover .book:hover .cover,
+    body.blur #list .book:hover .cover,
+    body.blur .book.isotope-item:hover .cover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    body.blur .discover .book .cover img,
+    body.blur #list .book .cover img,
+    body.blur .book.isotope-item .cover img {
+      transition: filter 0.22s ease;
+    }
+
+    body.blur .discover .book:hover .cover img,
+    body.blur #list .book:hover .cover img,
+    body.blur .book.isotope-item:hover .cover img {
+      filter: brightness(1.06) contrast(1.02);
+    }
+
+    body.blur .discover .book .meta .title,
+    body.blur #list .book .meta .title {
+      transition: color 0.2s ease;
+    }
+
+    body.blur .discover .book:hover .meta .title,
+    body.blur #list .book:hover .meta .title {
+      color: #fff !important;
+    }
+
+    /* Soften stock overlay so lift stays the main cue */
+    body.blur .discover .book .cover > a:after,
+    body.blur .book.isotope-item .cover > a:after {
+      transition: opacity 0.2s ease !important;
+    }
+
+    body.blur .discover .book:hover .cover > a:after,
+    body.blur .book.isotope-item:hover .cover > a:after {
+      opacity: 0.35 !important;
+    }
+
+    /* Detail cover: slight lift only */
+    body.blur.book .single .cover {
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease;
+    }
+
+    body.blur.book .single .cover:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 16px 36px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    /* ---- Sidebar nav ---- */
+    body.blur .navigation li:not(.nav-head):not(.create-shelf) {
+      transition: background-color 0.18s ease;
+    }
+
+    body.blur .navigation li:not(.nav-head):not(.create-shelf):hover {
+      background-color: hsla(0, 0%, 100%, 0.1);
+    }
+
+    body.blur .navigation li a {
+      transition: color 0.18s ease, padding-left 0.18s ease !important;
+    }
+
+    body.blur .navigation li:not(.nav-head):not(.create-shelf):hover > a {
+      color: #fff !important;
+      padding-left: 30px !important;
+    }
+
+    body.blur .navigation .create-shelf a {
+      transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease !important;
+    }
+
+    body.blur .navigation .create-shelf a:hover {
+      transform: translateY(-1px);
+      background-color: hsla(0, 0%, 100%, 0.12) !important;
+      border-radius: 4px !important;
+    }
+
+    /* ---- Buttons ---- */
+    body.blur .btn,
+    body.blur .btn-primary,
+    body.blur .btn-default {
+      transition:
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.18s ease !important;
+    }
+
+    body.blur .btn:hover,
+    body.blur .btn-primary:hover,
+    body.blur .btn-default:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    body.blur .btn:active,
+    body.blur .btn-primary:active,
+    body.blur .btn-default:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    /* Shelf / tag chips on detail */
+    body.blur.book .book-meta .tags a,
+    body.blur.book .book-meta .identifiers a,
+    body.blur.book #remove-from-shelves > a.btn,
+    body.blur.book #remove-from-shelves > .btn,
+    body.blur.book .public-shelf-memberships a {
+      transition:
+        background-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.18s ease !important;
+    }
+
+    body.blur.book .book-meta .tags a:hover,
+    body.blur.book .book-meta .identifiers a:hover,
+    body.blur.book #remove-from-shelves > a.btn:hover,
+    body.blur.book #remove-from-shelves > .btn:hover,
+    body.blur.book .public-shelf-memberships a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ---- Pagination arrows ---- */
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-next > a:before,
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previous > a:before,
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > a.next:before,
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > a.previous:before {
+      transition: color 0.18s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), text-shadow 0.18s ease;
+      display: inline-block;
+    }
+
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-next > a:hover:before,
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > a.next:hover:before {
+      transform: translateX(3px) scale(1.12);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previous > a:hover:before,
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.pagination > a.previous:hover:before {
+      transform: translateX(-3px) scale(1.12);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    /* ---- Tag cloud ---- */
+    body.blur .tag-cloud-item:hover {
+      transform: translateY(-2px) scale(1.06);
+    }
+
+    /* ---- Author / category / series list rows ---- */
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
+      transition: background-color 0.18s ease;
+    }
+
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:hover {
+      background-color: hsla(0, 0%, 100%, 0.05);
+    }
+
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row > .col-xs-6 > a,
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row > .col-xs-6 > a {
+      transition: color 0.18s ease !important;
+    }
+
+    body.blur > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:hover > .col-xs-6 > a {
+      color: #fff !important;
+    }
+
+    /* Top search / home affordances */
+    body.blur .navbar form .btn,
+    body.blur .home-btn a {
+      transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease !important;
+    }
+
+    body.blur .home-btn a:hover {
+      transform: scale(1.06);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.blur .cover,
+  body.blur .btn,
+  body.blur .tag-cloud-item,
+  body.blur .navigation li a {
+    transition: none !important;
+  }
 }
