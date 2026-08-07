@@ -94,6 +94,9 @@ def add_security_headers(resp):
     csp = "default-src " + ' '.join(default_src)
     if request.endpoint == "web.read_book" and config.config_use_google_drive:
         csp +=" blob: "
+    # Allow Umami analytics + session recorder (script load + beacon/API)
+    csp += "; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://analytics.cax.do"
+    csp += "; connect-src 'self' https://analytics.cax.do"
     csp += "; font-src 'self' data:"
     if request.endpoint == "web.read_book":
         csp += " blob: "
